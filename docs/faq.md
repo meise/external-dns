@@ -28,24 +28,7 @@ ExternalDNS can solve this for you as well.
 
 ### Which DNS providers are supported?
 
-Currently, the following providers are supported:
-
-- Google Cloud DNS
-- AWS Route 53
-- AzureDNS
-- CloudFlare
-- DigitalOcean
-- DNSimple
-- Infoblox
-- Dyn
-- OpenStack Designate
-- PowerDNS
-- CoreDNS
-- Exoscale
-- Oracle Cloud Infrastructure DNS
-- Linode DNS
-- RFC2136
-- TransIP
+Please check the [provider status table](https://github.com/kubernetes-sigs/external-dns#status-of-providers) for the list of supported providers and their status.
 
 As stated in the README, we are currently looking for stable maintainers for those providers, to ensure that bugfixes and new features will be available for all of those.
 
@@ -57,7 +40,9 @@ Services exposed via `type=LoadBalancer`, `type=ExternalName` and for the hostna
 
 There are three sources of information for ExternalDNS to decide on DNS name. ExternalDNS will pick one in order as listed below:
 
-1. For ingress objects ExternalDNS will create a DNS record based on the host specified for the ingress object. For services ExternalDNS will look for the annotation `external-dns.alpha.kubernetes.io/hostname` on the service and use the loadbalancer IP, it also will look for the annotation `external-dns.alpha.kubernetes.io/internal-hostname` on the service and use the service IP.
+1. For ingress objects ExternalDNS will create a DNS record based on the hosts specified for the ingress object, as well as the `external-dns.alpha.kubernetes.io/hostname` annotation. For services ExternalDNS will look for the annotation `external-dns.alpha.kubernetes.io/hostname` on the service and use the loadbalancer IP, it also will look for the annotation `external-dns.alpha.kubernetes.io/internal-hostname` on the service and use the service IP.
+    - For ingresses, you can optionally force ExternalDNS to create records based on _either_ the hosts specified or the `external-dns.alpha.kubernetes.io/hostname` annotation. This behavior is controlled by
+      setting the `external-dns.alpha.kubernetes.io/ingress-hostname-source` annotation on that ingress to either `defined-hosts-only` or `annotation-only`.
 
 2. If compatibility mode is enabled (e.g. `--compatibility={mate,molecule}` flag), External DNS will parse annotations used by Zalando/Mate, wearemolecule/route53-kubernetes. Compatibility mode with Kops DNS Controller is planned to be added in the future.
 
@@ -271,19 +256,22 @@ one to expose DNS to the internet.
 
 To do this with ExternalDNS you can use the `--annotation-filter` to specifically tie an instance of ExternalDNS to
 an instance of a ingress controller. Let's assume you have two ingress controllers `nginx-internal` and `nginx-external`
-then you can start two ExternalDNS providers one with `--annotation-filter=kubernetes.io/ingress.class=nginx-internal`
-and one with `--annotation-filter=kubernetes.io/ingress.class=nginx-external`.
+then you can start two ExternalDNS providers one with `--annotation-filter=kubernetes.io/ingress.class in (nginx-internal)`
+and one with `--annotation-filter=kubernetes.io/ingress.class in (nginx-external)`.
+
+If you need to search for multiple values of said annotation, you can provide a comma separated list, like so:
+`--annotation-filter=kubernetes.io/ingress.class in (nginx-internal, alb-ingress-internal)`.
 
 Beware when using multiple sources, e.g. `--source=service --source=ingress`, `--annotation-filter` will filter every given source objects.
 If you need to filter only one specific source you have to run a separated external dns service containing only the wanted `--source`  and `--annotation-filter`.
 
 ### How do I specify that I want the DNS record to point to either the Node's public or private IP when it has both?
 
-If your Nodes have both public and private IP addresses, you might want to write DNS records with one or the other.  
+If your Nodes have both public and private IP addresses, you might want to write DNS records with one or the other.
 For example, you may want to write a DNS record in a private zone that resolves to your Nodes' private IPs so that traffic never leaves your private network.
 
-To accomplish this, set this annotation on your service: `external-dns.alpha.kubernetes.io/access=private`  
-Conversely, to force the public IP: `external-dns.alpha.kubernetes.io/access=public`  
+To accomplish this, set this annotation on your service: `external-dns.alpha.kubernetes.io/access=private`
+Conversely, to force the public IP: `external-dns.alpha.kubernetes.io/access=public`
 
 If this annotation is not set, and the node has both public and private IP addresses, then the public IP will be used by default.
 

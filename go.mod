@@ -1,6 +1,6 @@
 module sigs.k8s.io/external-dns
 
-go 1.15
+go 1.16
 
 require (
 	cloud.google.com/go v0.50.0
@@ -25,11 +25,13 @@ require (
 	github.com/dnsimple/dnsimple-go v0.60.0
 	github.com/exoscale/egoscale v0.18.1
 	github.com/ffledgling/pdns-go v0.0.0-20180219074714-524e7daccd99
+	github.com/go-gandi/go-gandi v0.0.0-20200921091836-0d8a64b9cc09
 	github.com/golang/sync v0.0.0-20180314180146-1d60e4601c6f
-	github.com/google/go-cmp v0.4.1
+	github.com/google/go-cmp v0.5.2
 	github.com/gophercloud/gophercloud v0.1.0
 	github.com/gorilla/mux v1.7.4 // indirect
-	github.com/infobloxopen/infoblox-go-client v0.0.0-20180606155407-61dc5f9b0a65
+	github.com/hooklift/gowsdl v0.4.0
+	github.com/infobloxopen/infoblox-go-client v1.1.1
 	github.com/linki/instrumented_http v0.2.0
 	github.com/linode/linodego v0.19.0
 	github.com/maxatome/go-testdeep v1.4.0
@@ -44,16 +46,15 @@ require (
 	github.com/pkg/errors v0.9.1
 	github.com/projectcontour/contour v1.5.0
 	github.com/prometheus/client_golang v1.7.1
-	github.com/sanyu/dynectsoap v0.0.0-20181203081243-b83de5edc4e0
-	github.com/scaleway/scaleway-sdk-go v1.0.0-beta.6.0.20200623155123-84df6c4b5301
+	github.com/scaleway/scaleway-sdk-go v1.0.0-beta.7.0.20210127161313-bd30bebeac4f
 	github.com/sirupsen/logrus v1.6.0
 	github.com/smartystreets/gunit v1.3.4 // indirect
 	github.com/stretchr/testify v1.6.1
 	github.com/terra-farm/udnssdk v1.3.5 // indirect
-	github.com/transip/gotransip v5.8.2+incompatible
+	github.com/transip/gotransip/v6 v6.6.0
 	github.com/ultradns/ultradns-sdk-go v0.0.0-20200616202852-e62052662f60
 	github.com/vinyldns/go-vinyldns v0.0.0-20200211145900-fe8a3d82e556
-	github.com/vultr/govultr v0.4.2
+	github.com/vultr/govultr/v2 v2.5.1
 	go.etcd.io/etcd v0.5.0-alpha.5.0.20200401174654-e694b7bb0875
 	go.uber.org/ratelimit v0.1.0
 	golang.org/x/net v0.0.0-20201224014010-6772e930b67b
@@ -64,8 +65,8 @@ require (
 	gopkg.in/ns1/ns1-go.v2 v2.0.0-20190322154155-0dafb5275fd1
 	gopkg.in/yaml.v2 v2.3.0
 	honnef.co/go/tools v0.0.1-2020.1.4 // indirect
-	istio.io/api v0.0.0-20200529165953-72dad51d4ffc
-	istio.io/client-go v0.0.0-20200529172309-31c16ea3f751
+	istio.io/api v0.0.0-20210128181506-0c4b8e54850f
+	istio.io/client-go v0.0.0-20210128182905-ee2edd059e02
 	k8s.io/api v0.18.8
 	k8s.io/apimachinery v0.18.8
 	k8s.io/client-go v0.18.8
